@@ -36,7 +36,7 @@ def getWorkingDirectory():
 def getFileNamesFromArguments():
     # looks into the program input arguments to create a list of powerpoint files to merge and returns it
     powerPointFileNames = []
-
+    global outputPresentationName;
     print('cmd entry:', sys.argv)
     numArgs = len(sys.argv)
 
@@ -45,7 +45,10 @@ def getFileNamesFromArguments():
         displayHelpAndExit()
     for i in range(1, numArgs):
         argument = sys.argv[i]
-        if argument.find('*') != -1 or argument.find('?') != -1:
+        if argument.startswith("-o"):
+            outputPresentationName=argument[2:]
+            print(f'use output:{outputPresentationName}\n')
+        elif argument.find('*') != -1 or argument.find('?') != -1:
             # if wild cards are used, a list of names will be returned by the glob function. The + operator will merge the lists together
             powerPointFileNames = powerPointFileNames + glob.glob(argument)
         else:
